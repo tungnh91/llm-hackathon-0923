@@ -1,6 +1,7 @@
 import openai
 import streamlit as st
 from dotenv import load_dotenv
+from vector_db import put_in_db
 import os
 
 load_dotenv()
@@ -24,6 +25,9 @@ for msg in st.session_state.messages:
         st.chat_message(msg["role"]).write(msg["content"])
 
 uploaded_file = st.file_uploader("Upload a file")
+if uploaded_file is not None:
+    put_in_db(uploaded_file)
+    print(uploaded_file)
 
 if prompt := st.chat_input():
     openai.api_key = openai_api_key
